@@ -5,3 +5,4 @@ build/
 dist/
 *.log
 .DS_Store
+project_detail.txt

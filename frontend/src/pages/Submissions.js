@@ -40,29 +40,50 @@ export default function Submissions() {
       />
 
       <div className="card">
-        <div className="flex flex-col gap-3 mb-5">
-          <div className="flex flex-wrap items-center gap-2">
-            <select className="form-input w-full xs:w-36" value={filters.outcome} onChange={(e) => setFilter('outcome', e.target.value)}>
-              <option value="">All outcomes</option>
-              <option value="approved">Approved</option>
-              <option value="flagged">Flagged</option>
-              <option value="blocked">Blocked</option>
-              <option value="mixed">Mixed</option>
-            </select>
-            <select className="form-input w-full sm:w-48" value={filters.category} onChange={(e) => setFilter('category', e.target.value)}>
-              <option value="">All categories</option>
-              {MODERATION_CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <input type="date" className="form-input w-full sm:w-36 text-sm" value={filters.from} onChange={(e) => setFilter('from', e.target.value)} />
-            <span className="text-ink/35 text-xs hidden sm:inline">to</span>
-            <input type="date" className="form-input w-full sm:w-36 text-sm" value={filters.to} onChange={(e) => setFilter('to', e.target.value)} />
-            {hasFilters && <button className="btn-secondary btn-sm" onClick={clearFilters}>Clear</button>}
-            <span className="text-sm text-ink/40 dark:text-paper/35">{data.total} total</span>
-          </div>
+        {/* Filter bar — all controls sized to their content and wrapped in
+            a single flex row; only wraps to a new line if the viewport is
+            too narrow to fit everything (handled by flex-wrap). */}
+        <div className="flex flex-wrap items-center gap-2 mb-5">
+          <select
+            className="form-input w-auto"
+            value={filters.outcome}
+            onChange={(e) => setFilter('outcome', e.target.value)}
+          >
+            <option value="">All outcomes</option>
+            <option value="approved">Approved</option>
+            <option value="flagged">Flagged</option>
+            <option value="blocked">Blocked</option>
+            <option value="mixed">Mixed</option>
+          </select>
+
+          <select
+            className="form-input w-auto"
+            value={filters.category}
+            onChange={(e) => setFilter('category', e.target.value)}
+          >
+            <option value="">All categories</option>
+            {MODERATION_CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>{CATEGORY_LABELS[cat]}</option>
+            ))}
+          </select>
+
+          <input
+            type="date"
+            className="form-input w-auto text-sm"
+            value={filters.from}
+            onChange={(e) => setFilter('from', e.target.value)}
+          />
+          <span className="text-ink/35 text-xs hidden sm:inline">to</span>
+          <input
+            type="date"
+            className="form-input w-auto text-sm"
+            value={filters.to}
+            onChange={(e) => setFilter('to', e.target.value)}
+          />
+
+          {hasFilters && <button className="btn-secondary btn-sm" onClick={clearFilters}>Clear</button>}
+
+          <span className="text-sm text-ink/40 dark:text-paper/35 sm:ml-auto">{data.total} total</span>
         </div>
 
         {loading ? (
