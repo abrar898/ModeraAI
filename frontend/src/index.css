@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+html, body {
+  @apply font-body antialiased;
+}
+
+body {
+  @apply bg-paper text-ink dark:bg-dusk dark:text-paper transition-colors duration-300;
+}
+
+h1, h2, h3, h4, h5 {
+  @apply font-display;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { @apply bg-transparent; }
+::-webkit-scrollbar-thumb { @apply bg-signal/40 rounded-full; }
+
+::selection { @apply bg-signal/25; }
+
+/* Visible keyboard focus everywhere */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  @apply outline-none ring-2 ring-signal ring-offset-2 ring-offset-paper dark:ring-offset-dusk;
+}
+
+/* ---------- Reusable component classes ---------- */
+@layer components {
+  .card {
+    @apply bg-white dark:bg-dusk-raised border border-mist dark:border-dusk-line
+           rounded-xl2 p-4 sm:p-6 shadow-card dark:shadow-card-dark;
+  }
+
+  .btn {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold
+           transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-signal text-white shadow-lift hover:bg-signal-dark hover:-translate-y-0.5;
+  }
+  .btn-secondary {
+    @apply btn bg-transparent text-ink border border-ink/15 hover:border-ink/35 hover:bg-ink/[0.03]
+           dark:text-paper dark:border-paper/20 dark:hover:border-paper/40 dark:hover:bg-paper/5;
+  }
+  .btn-danger {
+    @apply btn bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100
+           dark:bg-rose-500/10 dark:text-rose-300 dark:border-rose-500/30 dark:hover:bg-rose-500/20;
+  }
+  .btn-success {
+    @apply btn bg-cleared-light text-cleared border border-cleared/25 hover:brightness-95
+           dark:bg-cleared/15 dark:text-emerald-300 dark:border-cleared/35;
+  }
+  .btn-sm { @apply px-3 py-1.5 text-xs; }
+  .btn-lg { @apply px-6 py-3 text-base; }
+
+  .form-label {
+    @apply block text-xs font-semibold uppercase tracking-wide text-ink/50 dark:text-paper/45 mb-1.5;
+  }
+  .form-input {
+    @apply w-full bg-paper-dim dark:bg-white/5 border border-mist-dark dark:border-dusk-line
+           rounded-xl px-3.5 py-2.5 text-sm text-ink dark:text-paper
+           placeholder:text-ink/35 dark:placeholder:text-paper/30
+           focus:outline-none focus:ring-2 focus:ring-signal/60 transition;
+  }
+
+  /* Native select dropdown — readable in light & dark themes */
+  select.form-input {
+    @apply cursor-pointer appearance-none bg-no-repeat pr-9;
+    color-scheme: light;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239B9685' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+  }
+  .dark select.form-input {
+    color-scheme: dark;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23D9D6CB' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  }
+  select.form-input option {
+    @apply bg-white text-ink;
+  }
+  .dark select.form-input option {
+    @apply bg-dusk-raised text-paper;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide;
+  }
+  .badge-approved { @apply bg-cleared-light text-cleared dark:bg-cleared/15 dark:text-emerald-300; }
+  .badge-flagged  { @apply bg-signal-light text-signal-dark dark:bg-signal/15 dark:text-signal; }
+  .badge-blocked  { @apply bg-rose-100 text-rose-600 dark:bg-rose-500/15 dark:text-rose-300; }
+  .badge-mixed    { @apply bg-mist text-ink/70 dark:bg-dusk-line dark:text-paper/70; }
+  .badge-pending  { @apply bg-signal-light text-signal-dark dark:bg-signal/15 dark:text-signal; }
+  .badge-accepted { @apply bg-cleared-light text-cleared dark:bg-cleared/15 dark:text-emerald-300; }
+  .badge-rejected { @apply bg-rose-100 text-rose-600 dark:bg-rose-500/15 dark:text-rose-300; }
+
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
+           text-ink/55 dark:text-paper/55 hover:bg-ink/[0.04] dark:hover:bg-paper/[0.06]
+           hover:text-ink dark:hover:text-paper transition-colors;
+  }
+  .nav-item.active {
+    @apply bg-signal text-white shadow-lift;
+  }
+
+  .toggle-track {
+    @apply relative inline-block w-10 h-[22px] rounded-full bg-mist-dark dark:bg-dusk-line cursor-pointer transition-colors;
+  }
+  .toggle-track::after {
+    content: '';
+    @apply absolute top-0.5 left-0.5 w-[18px] h-[18px] bg-white rounded-full shadow transition-transform duration-200;
+  }
+  input:checked + .toggle-track { @apply bg-signal; }
+  input:checked + .toggle-track::after { transform: translateX(18px); }
+
+  .table-row-hover { @apply hover:bg-ink/[0.02] dark:hover:bg-paper/[0.03] transition-colors; }
+
+  .eyebrow {
+    @apply text-xs font-bold uppercase tracking-[0.14em] text-signal;
+  }
+
+  /* Landing page emphasis — bold display highlights */
+  .text-highlight {
+    @apply font-display font-bold text-signal;
+  }
+  .text-highlight-ink {
+    @apply font-display font-bold text-ink dark:text-paper;
+  }
+  .highlight-bar {
+    @apply inline-block bg-signal/15 dark:bg-signal/20 px-1.5 py-0.5 rounded-md;
+  }
+}
+
+/* Range slider thumb styling */
+input[type="range"] {
+  @apply h-1.5 rounded-full bg-mist-dark dark:bg-dusk-line appearance-none cursor-pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  @apply appearance-none w-4 h-4 rounded-full bg-signal cursor-pointer shadow;
+}
+
+/* Subtle paper grain texture for hero/section backgrounds */
+.grain {
+  background-image: radial-gradient(circle at 1px 1px, rgba(27,37,33,0.05) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+.dark .grain {
+  background-image: radial-gradient(circle at 1px 1px, rgba(250,248,243,0.06) 1px, transparent 0);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
